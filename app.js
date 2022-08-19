@@ -9,7 +9,7 @@ const BMIData = [
 
 const height = document.querySelector("#taille");
 const weight = document.querySelector("#poids");
-const btnCalculate = document.querySelector(".imc");
+const btnCalculate = document.querySelector("button");
 const result = document.querySelector(".result");
 const info = document.querySelector(".info");
 
