@@ -7,15 +7,44 @@ const BMIData = [
   { name: "Obésité morbide", color: "purple", range: 40 },
 ];
 
-// IMC = poids en kg / taille² en m
+const height = document.querySelector("#taille");
+const weight = document.querySelector("#poids");
 const btnCalculate = document.querySelector(".imc");
 const result = document.querySelector(".result");
 const info = document.querySelector(".info");
 
 btnCalculate.addEventListener("click", function (e) {
   e.preventDefault();
+  calculateBMI(height, weight);
+});
+
+function calculateBMI(height, weight) {
   const meterNumHeight = Number(height.value) / 100;
   const numWeight = Number(weight.value);
-  imc = (numWeight / Math.pow(meterNumHeight, 2)).toFixed(2);
-  result.textContent = imc;
-});
+
+  if (!meterNumHeight || !numWeight || meterNumHeight <= 0 || numWeight <= 0) {
+    handleError();
+    return;
+  }
+  const BMI = (numWeight / Math.pow(meterNumHeight, 2)).toFixed(1);
+  showResult(BMI);
+}
+
+function showResult(BMI) {
+  const rank = BMIData.find((data) => {
+    if (BMI >= data.range[0] && BMI < data.range[1]) {
+      info.textContent = data.name;
+      return data;
+    } else if (typeof data.range === "number" && BMI >= data.range) {
+      info.textContent = data.name;
+      return data;
+    }
+  });
+  result.textContent = BMI;
+  result.style.color = `${rank.color}`;
+}
+
+function handleError() {
+  result.textContent = "WHOOOPS";
+  info.textContent = "Veuillez entrer votre taille et votre poids !";
+}
